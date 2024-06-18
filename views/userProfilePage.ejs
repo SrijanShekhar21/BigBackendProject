@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>User Profile</title>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="left-nav">
+        <a href="" style="text-decoration: none; font-size: 2.5rem">♾️</a>
+        <h1>Welcome <%= name %></h1>
+      </div>
+
+      <div class="right-nav">
+        <div class="right-pic-options">
+          <div class="profileImage">
+            <!-- Hidden options (edit/delete) -->
+            <div class="image-options" id="imageOptions" style="display: none">
+              <div class="changeProfileImage">
+                <button onclick="togglePopup()" class="btn-open-popup">
+                  ✏️Change
+                </button>
+              </div>
+
+              <div class="deleteProfileImage">
+                <form action="/users/deleteProfilePic" method="post">
+                  <input
+                    type="text"
+                    name="userid"
+                    value="<%= id %>"
+                    style="display: none"
+                  />
+                  <button
+                    type="submit"
+                    onclick="confirm('Are you sure?')"
+                    class="btn-open-popup-del"
+                  >
+                    🗑️Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile pic circle -->
+          <div class="profilePic" id="profilePicContainer">
+            <img
+              src="<%= profilePicURL %>"
+              alt="Set profile pic!"
+              id="profileImage"
+            />
+          </div>
+        </div>
+
+        <div class="logout">
+          <form action="/users/logout" method="get">
+            <button class="button-87-user-logout" role="button">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pop up form -->
+
+    <div id="popupOverlay" class="overlay-container">
+      <div class="popup-box">
+        <form
+          class="form-container-popup"
+          action="/users/changeProfilePic"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <input
+            type="text"
+            name="userid"
+            value="<%= id %>"
+            style="display: none"
+          />
+          <input
+            class="form-input"
+            type="file"
+            id="name"
+            name="newProfilePic"
+            required
+          />
+          <button class="btn-submit" type="submit">Submit</button>
+        </form>
+
+        <button class="btn-close-popup" onclick="togglePopup()">Close</button>
+      </div>
+    </div>
+
+    <script>
+      // Get the profile picture container and options elements
+      const profilePicContainer = document.getElementById(
+        "profilePicContainer"
+      );
+      const imageOptions = document.getElementById("imageOptions");
+
+      // Add click event listener to the profile picture container
+      profilePicContainer.addEventListener("click", function () {
+        // Toggle the display of the options
+        imageOptions.style.display =
+          imageOptions.style.display === "none" ? "block" : "none";
+      });
+
+      function togglePopup() {
+        const overlay = document.getElementById("popupOverlay");
+        overlay.classList.toggle("show");
+      }
+    </script>
+  </body>
+</html>
